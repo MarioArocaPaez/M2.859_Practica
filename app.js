@@ -22,7 +22,7 @@ function decadeOf(year) {
 function filteredRows() {
   const yMin = Number(document.getElementById("yearMin").value);
   const yMax = Number(document.getElementById("yearMax").value);
-  return rows.filter(r => r.year >= yMin && r.year <= yMax);
+  return rows.filter((r) => r.year >= yMin && r.year <= yMax);
 }
 
 function buildYearlySeries(metric, data) {
@@ -38,7 +38,7 @@ function buildYearlySeries(metric, data) {
     obj.n += 1;
   }
   const years = Array.from(byYear.keys()).sort((a, b) => a - b);
-  const values = years.map(y => byYear.get(y).sum / byYear.get(y).n);
+  const values = years.map((y) => byYear.get(y).sum / byYear.get(y).n);
   return { years, values };
 }
 
@@ -52,7 +52,8 @@ function renderLine() {
     y: values,
     type: "scatter",
     mode: "lines+markers",
-    hovertemplate: "Año %{x}<br>" + metric + " (media): %{y:.3f}<extra></extra>"
+    hovertemplate:
+      "Año %{x}<br>" + metric + " (media): %{y:.3f}<extra></extra>",
   };
 
   const layout = {
@@ -61,7 +62,7 @@ function renderLine() {
     yaxis: { title: `${metric} (media anual)` },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
-    font: { color: "#e9eef5" }
+    font: { color: "#e9eef5" },
   };
 
   Plotly.newPlot("lineChart", [trace], layout, { responsive: true });
@@ -75,7 +76,8 @@ function renderScatter() {
   // Agrupar por década para colorear
   const groups = new Map();
   for (const r of data) {
-    const x = r[xM], y = r[yM];
+    const x = r[xM],
+      y = r[yM];
     if (x === null || y === null) continue;
     const d = decadeOf(r.year);
     if (!groups.has(d)) groups.set(d, []);
@@ -84,20 +86,22 @@ function renderScatter() {
 
   const traces = Array.from(groups.keys())
     .sort((a, b) => a - b)
-    .map(d => {
+    .map((d) => {
       const g = groups.get(d);
       return {
         name: `${d}s`,
-        x: g.map(r => r[xM]),
-        y: g.map(r => r[yM]),
+        x: g.map((r) => r[xM]),
+        y: g.map((r) => r[yM]),
         type: "scatter",
         mode: "markers",
         marker: { size: 7, opacity: 0.75 },
-        text: g.map(r => `${r.name} — ${r.artist} (${r.year})`),
+        text: g.map((r) => `${r.name} — ${r.artist} (${r.year})`),
         hovertemplate:
           "%{text}<br>" +
-          xM + ": %{x:.3f}<br>" +
-          yM + ": %{y:.3f}<extra></extra>"
+          xM +
+          ": %{x:.3f}<br>" +
+          yM +
+          ": %{y:.3f}<extra></extra>",
       };
     });
 
@@ -108,7 +112,7 @@ function renderScatter() {
     legend: { orientation: "h" },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
-    font: { color: "#e9eef5" }
+    font: { color: "#e9eef5" },
   };
 
   Plotly.newPlot("scatterChart", traces, layout, { responsive: true });
@@ -123,7 +127,9 @@ function renderTopTable() {
   topN = Math.min(topN, 100);
 
   // Filtrar filas que tengan la métrica
-  const filtered = data.filter(r => r[metric] !== null && r[metric] !== undefined);
+  const filtered = data.filter(
+    (r) => r[metric] !== null && r[metric] !== undefined
+  );
 
   // Orden descendente (top = valores más altos)
   filtered.sort((a, b) => (b[metric] ?? -Infinity) - (a[metric] ?? -Infinity));
@@ -145,7 +151,9 @@ function renderTopTable() {
         </tr>
       </thead>
       <tbody>
-        ${top.map((r, i) => `
+        ${top
+          .map(
+            (r, i) => `
           <tr>
             <td>${i + 1}</td>
             <td>${r.name ?? ""}</td>
@@ -153,14 +161,15 @@ function renderTopTable() {
             <td>${r.year ?? ""}</td>
             <td>${(r[metric] ?? "").toString()}</td>
           </tr>
-        `).join("")}
+        `
+          )
+          .join("")}
       </tbody>
     </table>
   `;
 
   document.getElementById("topTable").innerHTML = html;
 }
-
 
 function hookUI() {
   document.getElementById("apply").addEventListener("click", () => {
@@ -178,7 +187,9 @@ function hookUI() {
   });
 
   // actualizar el top automáticamente al cambiar selector/cantidad
-  document.getElementById("topMetric").addEventListener("change", renderTopTable);
+  document
+    .getElementById("topMetric")
+    .addEventListener("change", renderTopTable);
   document.getElementById("topN").addEventListener("change", renderTopTable);
 }
 
@@ -197,14 +208,14 @@ function loadData() {
     complete: (results) => {
       // Normalizamos filas
       rows = results.data
-        .map(r => ({
+        .map((r) => ({
           name: r.name,
           artist: r.artist,
           year: toYear(r.release_date),
           popularity: toNum(r.popularity),
 
           // métricas Spotify
-          danceability: toNum(r.danceability),       // ignoramos danceability.1
+          danceability: toNum(r.danceability), // ignoramos danceability.1
           energy: toNum(r.energy),
           tempo: toNum(r.tempo),
           loudness: toNum(r.loudness),
@@ -214,17 +225,17 @@ function loadData() {
           liveness: toNum(r.liveness),
           instrumentalness: toNum(r.instrumentalness),
         }))
-        .filter(r => r.year !== null);
+        .filter((r) => r.year !== null);
 
-      yearMinGlobal = Math.min(...rows.map(r => r.year));
-      yearMaxGlobal = Math.max(...rows.map(r => r.year));
+      yearMinGlobal = Math.min(...rows.map((r) => r.year));
+      yearMaxGlobal = Math.max(...rows.map((r) => r.year));
       setYearInputs(yearMinGlobal, yearMaxGlobal);
 
       hookUI();
       renderLine();
       renderScatter();
       renderTopTable();
-    }
+    },
   });
 }
 

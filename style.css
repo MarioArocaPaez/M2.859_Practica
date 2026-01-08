@@ -1,17 +1,78 @@
-:root { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-body { margin: 0; background: #0b0f14; color: #e9eef5; }
-.container { max-width: 1050px; margin: 0 auto; padding: 18px; }
-.subtitle { opacity: .85; margin-top: -8px; }
-.card { background: #121826; border: 1px solid #243044; border-radius: 14px; padding: 16px; margin: 14px 0; }
-.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
-label { display: grid; gap: 6px; font-size: 14px; }
-select, input, button { padding: 8px 10px; border-radius: 10px; border: 1px solid #2c3a54; background: #0b0f14; color: #e9eef5; }
-button { cursor: pointer; }
-button:hover { filter: brightness(1.1); }
-.chart { width: 100%; height: 420px; }
-.hint { opacity: .85; }
-.footer { opacity: .7; font-size: 13px; padding-bottom: 30px; }
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+body {
+  margin: 0;
+  background: #0b0f14;
+  color: #e9eef5;
+}
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 18px;
+}
+.subtitle {
+  opacity: 0.85;
+  margin-top: -8px;
+}
+.card {
+  background: #121826;
+  border: 1px solid #243044;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+}
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+select,
+input,
+button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #2c3a54;
+  background: #0b0f14;
+  color: #e9eef5;
+}
+button {
+  cursor: pointer;
+}
+button:hover {
+  filter: brightness(1.1);
+}
+.chart {
+  width: 100%;
+  height: 420px;
+}
+.hint {
+  opacity: 0.85;
+}
+.footer {
+  opacity: 0.7;
+  font-size: 13px;
+  padding-bottom: 30px;
+}
 
-table.top { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-table.top th, table.top td { border-bottom: 1px solid #243044; padding: 8px; text-align: left; }
-table.top th { opacity: .9; }
+table.top {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+table.top th,
+table.top td {
+  border-bottom: 1px solid #243044;
+  padding: 8px;
+  text-align: left;
+}
+table.top th {
+  opacity: 0.9;
+}
