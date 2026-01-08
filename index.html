@@ -93,9 +93,36 @@
     </section>
 
     <section class="card">
-      <h2>3) Top canciones (según filtro)</h2>
-      <div id="topTable"></div>
-    </section>
+  <h2>3) Top canciones (según filtro)</h2>
+
+  <div class="controls">
+    <label>
+      Ordenar top por:
+      <select id="topMetric">
+        <option value="popularity" selected>popularity</option>
+        <option value="energy">energy</option>
+        <option value="tempo">tempo</option>
+        <option value="loudness">loudness</option>
+        <option value="danceability">danceability</option>
+        <option value="acousticness">acousticness</option>
+        <option value="valence">valence</option>
+        <option value="speechiness">speechiness</option>
+        <option value="liveness">liveness</option>
+        <option value="instrumentalness">instrumentalness</option>
+      </select>
+    </label>
+
+    <label>
+      Nº de canciones:
+      <input id="topN" type="number" min="1" max="100" value="10" />
+    </label>
+
+    <button id="updateTop">Actualizar top</button>
+  </div>
+
+  <div id="topTable"></div>
+</section>
+
   </main>
 
   <footer class="container footer">

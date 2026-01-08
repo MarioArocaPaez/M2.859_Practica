@@ -115,28 +115,52 @@ function renderScatter() {
 }
 
 function renderTopTable() {
-  const data = filteredRows()
-    .slice()
-    .sort((a, b) => (b.popularity ?? -1) - (a.popularity ?? -1))
-    .slice(0, 10);
+  const data = filteredRows();
+
+  const metric = document.getElementById("topMetric")?.value || "popularity";
+  let topN = Number(document.getElementById("topN")?.value ?? 10);
+  if (!Number.isFinite(topN) || topN < 1) topN = 10;
+  topN = Math.min(topN, 100);
+
+  // Filtrar filas que tengan la métrica
+  const filtered = data.filter(r => r[metric] !== null && r[metric] !== undefined);
+
+  // Orden descendente (top = valores más altos)
+  filtered.sort((a, b) => (b[metric] ?? -Infinity) - (a[metric] ?? -Infinity));
+
+  const top = filtered.slice(0, topN);
 
   const html = `
+    <p class="hint">
+      Mostrando Top ${top.length} por <b>${metric}</b> (rango años aplicado).
+    </p>
     <table class="top">
-      <thead><tr><th>#</th><th>Canción</th><th>Artista</th><th>Año</th><th>Popularidad</th></tr></thead>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Canción</th>
+          <th>Artista</th>
+          <th>Año</th>
+          <th>${metric}</th>
+        </tr>
+      </thead>
       <tbody>
-        ${data.map((r, i) => `
+        ${top.map((r, i) => `
           <tr>
             <td>${i + 1}</td>
-            <td>${r.name}</td>
-            <td>${r.artist}</td>
-            <td>${r.year}</td>
-            <td>${r.popularity ?? ""}</td>
-          </tr>`).join("")}
+            <td>${r.name ?? ""}</td>
+            <td>${r.artist ?? ""}</td>
+            <td>${r.year ?? ""}</td>
+            <td>${(r[metric] ?? "").toString()}</td>
+          </tr>
+        `).join("")}
       </tbody>
     </table>
   `;
+
   document.getElementById("topTable").innerHTML = html;
 }
+
 
 function hookUI() {
   document.getElementById("apply").addEventListener("click", () => {
@@ -148,6 +172,14 @@ function hookUI() {
   document.getElementById("updateScatter").addEventListener("click", () => {
     renderScatter();
   });
+
+  document.getElementById("updateTop").addEventListener("click", () => {
+    renderTopTable();
+  });
+
+  // actualizar el top automáticamente al cambiar selector/cantidad
+  document.getElementById("topMetric").addEventListener("change", renderTopTable);
+  document.getElementById("topN").addEventListener("change", renderTopTable);
 }
 
 function setYearInputs(minY, maxY) {
