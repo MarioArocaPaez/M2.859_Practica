@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>La evolución del rock en Spotify</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Plotly -->
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <!-- PapaParse para leer CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <header class="container">
+    <h1>La evolución del rock en Spotify</h1>
+    <p class="subtitle">
+      Exploración interactiva de cómo cambian rasgos musicales del rock con el tiempo.
+    </p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Controles</h2>
+      <div class="controls">
+        <label>
+          Métrica (promedio anual):
+          <select id="metric">
+            <option value="energy">energy</option>
+            <option value="tempo">tempo</option>
+            <option value="loudness">loudness</option>
+            <option value="danceability">danceability</option>
+            <option value="acousticness">acousticness</option>
+            <option value="valence">valence</option>
+            <option value="speechiness">speechiness</option>
+            <option value="liveness">liveness</option>
+            <option value="instrumentalness">instrumentalness</option>
+            <option value="popularity">popularity</option>
+          </select>
+        </label>
+
+        <label>
+          Año inicio:
+          <input id="yearMin" type="number" />
+        </label>
+
+        <label>
+          Año fin:
+          <input id="yearMax" type="number" />
+        </label>
+
+        <button id="apply">Aplicar</button>
+      </div>
+      <p class="hint">
+        Consejo: prueba <b>energy</b> y <b>loudness</b> para ver cambios claros por décadas.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>1) Evolución temporal</h2>
+      <div id="lineChart" class="chart" role="img" aria-label="Gráfico de evolución temporal por año"></div>
+    </section>
+
+    <section class="card">
+      <h2>2) Relación entre rasgos</h2>
+      <div class="controls">
+        <label>
+          Eje X:
+          <select id="xMetric">
+            <option value="energy">energy</option>
+            <option value="danceability" selected>danceability</option>
+            <option value="acousticness">acousticness</option>
+            <option value="valence">valence</option>
+            <option value="tempo">tempo</option>
+          </select>
+        </label>
+
+        <label>
+          Eje Y:
+          <select id="yMetric">
+            <option value="energy" selected>energy</option>
+            <option value="danceability">danceability</option>
+            <option value="acousticness">acousticness</option>
+            <option value="valence">valence</option>
+            <option value="tempo">tempo</option>
+          </select>
+        </label>
+
+        <button id="updateScatter">Actualizar scatter</button>
+      </div>
+
+      <div id="scatterChart" class="chart" role="img" aria-label="Gráfico de dispersión de rasgos musicales"></div>
+    </section>
+
+    <section class="card">
+      <h2>3) Top canciones (según filtro)</h2>
+      <div id="topTable"></div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <p>Hecho con Plotly.js · Publicado en GitHub Pages · Accesible sin registro</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
