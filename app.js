@@ -106,14 +106,30 @@ function renderScatter() {
     });
 
   const layout = {
-    margin: { t: 25, r: 10, b: 50, l: 55 },
-    xaxis: { title: xM },
-    yaxis: { title: yM },
-    legend: { orientation: "h" },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
-    font: { color: "#e9eef5" },
-  };
+  // Más margen inferior para alojar la leyenda
+  margin: { t: 25, r: 10, b: 130, l: 55 },
+
+  xaxis: {
+    title: { text: xM, standoff: 35 }, // separa el título del eje X de la zona inferior
+  },
+  yaxis: { title: yM },
+
+  // Leyenda fuera del gráfico, debajo
+  legend: {
+    orientation: "h",
+    x: 0,
+    y: -0.35,          // la manda por debajo del plot
+    xanchor: "left",
+    yanchor: "top",
+    bgcolor: "rgba(0,0,0,0)",
+    font: { size: 12 },
+  },
+
+  paper_bgcolor: "rgba(0,0,0,0)",
+  plot_bgcolor: "rgba(0,0,0,0)",
+  font: { color: "#e9eef5" },
+};
+
 
   Plotly.newPlot("scatterChart", traces, layout, { responsive: true });
 }
